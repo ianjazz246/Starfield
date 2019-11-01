@@ -20,7 +20,7 @@ void setup()
 			new Particle(
 				(float)(particleCenterDist*Math.cos(rotatePerIterate*i) + width/2), (float)(particleCenterDist*Math.sin(rotatePerIterate*i) + height/2),
 				(float)(rotatePerIterate*i),
-				(float)(Math.random()*21),
+				(float)(Math.random()*15),
 				color((int)(Math.random()*80)+175),
 				5
 			)
@@ -32,8 +32,8 @@ void setup()
 			width/2, height/22,
 			(float)(Math.random()*2*Math.PI),
 			(float)(Math.random()*4),
-			color((int)(Math.random()*80)+80),
-			50
+			color(255, 0, 255),
+			15
 		)
 	);
 }
@@ -55,10 +55,10 @@ class Particle
 	float x, y;
 	float angle, speed;
 	float prevX, prevY;
+	float size;
+	int clr;
 
-	int clr, size;
-
-	Particle(float x, float y, float angle, float speed, int clr, int size)
+	Particle(float x, float y, float angle, float speed, int clr, float size)
 	{
 		this.x = x;
 		this.y = y;
@@ -117,7 +117,7 @@ class Particle
 class OddballParticle extends Particle
 {
 	float rotation;
-	OddballParticle(float x, float y, float angle, float speed, int clr, int size)
+	OddballParticle(float x, float y, float angle, float speed, int clr, float size)
 	{
 		super(x, y, angle, speed, clr, size);
 		this.rotation = 0;
@@ -127,24 +127,33 @@ class OddballParticle extends Particle
 	{
 		this.rotation += Math.PI / 50;
 		super.move();
+		this.size += 0.3;
 	}
 
 	void show()
 	{
+		noStroke();
 		pushMatrix();
 		fill(this.clr);
-		stroke(this.clr - 20);
 		translate(this.x, this.y);
 		rotate((float)(this.rotation));
-		scale(2);
+		scale(this.size / 10);
 		//translate back to original position
 		translate(-this.x, -this.y);
+		fill(255, 0, 0);
 		ellipse(this.x, this.y, 10, 4);
-		ellipse(this.x, this.y, 10, 2);
-		ellipse(this.x - 10, this.y - 3, 4, 10);
+		//ellipse(this.x, this.y, 10, 2);
+		ellipse(this.x - 5, this.y - 4, 4, 10);
+		ellipse(this.x - 2, this.y + 3, 6, 4);
 
 
 		popMatrix();
+	}
+
+	void reset()
+	{
+		super.reset();
+		this.size = 2;
 	}
 
 }
